@@ -41,12 +41,12 @@ void CommandDispatcher (int32_t pProcNum, sLONG_PTR *pResult, PackagePtr pParams
 {
 	switch(pProcNum)
 	{		
-		case kInitPlugin:
+		case kDeinitPlugin:
 		case kServerDeinitPlugin:
 			listenerLoopFinish();
 			break;			
 			
-		case kDeinitPlugin:
+		case kInitPlugin:
 		case kServerInitPlugin:
 			break;	
 		
