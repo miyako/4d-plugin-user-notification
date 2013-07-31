@@ -16,7 +16,7 @@
 
 UserNotificationListener *listener = nil;
 
-#define Notification_dislay_always 1
+#define Notification_display_always 1
 #define Notification_system_decides 0
 
 char listenerMode = Notification_system_decides;
@@ -99,7 +99,7 @@ void NOTIFICATION_SET_MODE(sLONG_PTR *pResult, PackagePtr pParams)
 	listenerMode = Param1.getIntValue();
 	
 	if(listener){
-		if(listenerMode == Notification_dislay_always){
+		if(listenerMode == Notification_display_always){
 			[listener presentNotification:YES];
 		}else{
 			[listener presentNotification:NO];				
@@ -136,7 +136,7 @@ void NOTIFICATION_SET_METHOD(sLONG_PTR *pResult, PackagePtr pParams)
 							methodId:[NSNumber numberWithInt:methodId]
 							processNumber:[NSNumber numberWithInt:listenerProcessNumber]];
 				
-				if(listenerMode == Notification_dislay_always){
+				if(listenerMode == Notification_display_always){
 					[listener presentNotification:YES];
 				}else{
 					[listener presentNotification:NO];				

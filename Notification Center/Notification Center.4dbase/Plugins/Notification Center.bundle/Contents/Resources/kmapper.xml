@@ -7,9 +7,9 @@
       <param position="1" k="20000"/>
    </command>
    <command name="DELIVER NOTIFICATION" str="20000" topic="5">
-      <param position="4" k="20001"/>
+      <param position="5" k="20001"/>
    </command>
    <command name="SCHEDULE NOTIFICATION" str="20000" topic="6">
-      <param position="4" k="20001"/>
+      <param position="5" k="20001"/>
    </command>
 </application>
