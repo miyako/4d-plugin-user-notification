@@ -197,48 +197,7 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>D1ADDD6D17A9C83D0061E402</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>4DPlugin.cpp</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>D1ADDD6E17A9C83D0061E402</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>4DPlugin.cpp</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>D1ADDD6F17A9C83D0061E402</string>
-						<key>history</key>
-						<array>
-							<string>D1ADDD6517A9C7F80061E402</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {849, 584}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>246 253 849 625 0 0 1440 878 </string>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -357,7 +316,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>4DPlugin.cpp</string>
+								<string>PAListener.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -365,20 +324,20 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>4DPlugin.cpp</string>
+										<string>PAListener.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D1ADDD6A17A9C83D0061E402</string>
+										<string>D13BE46217A9CA3300111482</string>
 										<key>history</key>
 										<array>
 											<string>D186B0DA179A8B79004AEEB6</string>
 											<string>D12DF262179AAAEF00384ECD</string>
 											<string>D12DF264179AAAEF00384ECD</string>
 											<string>D17B2122179AB5EF00A9AAE2</string>
+											<string>D13BE46017A9CA3300111482</string>
+											<string>D13BE46117A9CA3300111482</string>
 											<string>D1E2A95317A9B7A4006FAB20</string>
-											<string>D1ADDD6817A9C83D0061E402</string>
-											<string>D1ADDD6917A9C83D0061E402</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -390,14 +349,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {767, 531}}</string>
+								<string>{{0, 0}, {767, 529}}</string>
 								<key>RubberWindowFrame</key>
 								<string>128 245 975 633 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>531pt</string>
+							<string>529pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -410,14 +369,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 536}, {767, 56}}</string>
+								<string>{{0, 534}, {767, 58}}</string>
 								<key>RubberWindowFrame</key>
 								<string>128 245 975 633 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>56pt</string>
+							<string>58pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -436,9 +395,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D1ADDD6B17A9C83D0061E402</string>
+				<string>D13BE46317A9CA3300111482</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>D1ADDD6C17A9C83D0061E402</string>
+				<string>D13BE46417A9CA3300111482</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -576,9 +535,9 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>D13BE46617A9CA3300111482</string>
 		<string>D186B095179A8491004AEEB6</string>
 		<string>/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.xcodeproj</string>
-		<string>D1ADDD6D17A9C83D0061E402</string>
 	</array>
 	<key>WindowString</key>
 	<string>128 245 975 633 0 0 1440 878 </string>
@@ -658,7 +617,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>D186B095179A8491004AEEB6</string>
-				<string>D1ADDD7017A9C83D0061E402</string>
+				<string>D13BE46517A9CA3300111482</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

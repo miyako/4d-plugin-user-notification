@@ -291,6 +291,9 @@ void listenerLoopFinish(){
 
 	if(listener)
 	{
+		NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
+		center.delegate = nil;
+		
 		[listener terminate];
 		listener = nil;
 	}	

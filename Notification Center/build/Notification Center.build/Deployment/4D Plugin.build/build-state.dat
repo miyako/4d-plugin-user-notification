@@ -1,7 +1,7 @@
 T4D Plugin
 v7
 r0
-t397002812.295741
+t397003311.993261
 cCheck dependencies
 cProcessInfoPlistFile "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Info.plist" Info.plist
 cCopyStringsFile "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Resources/English.lproj/InfoPlist.strings" English.lproj/InfoPlist.strings
@@ -317,9 +317,9 @@ s129
 i<Carbon/Carbon.h>
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp
-c0000000051F9909F000000000000231A
-t1375309983
-s8986
+c0000000051F992AF0000000000002398
+t1375310511
+s9112
 i"4DPluginAPI.h"
 i"4DPlugin.h"
 i"listener.h"
@@ -340,7 +340,7 @@ t1295943304
 s388
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle
-t1375310012
+t1375310511
 s102
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Info.plist
@@ -348,7 +348,7 @@ t1374309703
 s1074
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center
-t1375310012
+t1375310511
 s183120
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Resources/English.lproj/InfoPlist.strings
@@ -373,8 +373,8 @@ s2505
 i"PAListener.h"
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPlugin-A75C1BDA8545CD80.o
-t1375310010
-s15176
+t1375310511
+s15312
 
 N/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPluginAPI.o
 t1375310011
@@ -498,11 +498,11 @@ s678
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies397002809#397002810#0(172"[WARN]LLVM GCC 4.2 default Mac OS X deployment target '10.8.4' for architecture 'i386' and variant 'normal' is greater than the maximum value '10.8' for the OS X 10.8 SDK.1(22@165"LLVM GCC 4.2 default Mac OS X deployment target '10.8.4' for architecture 'i386' and variant 'normal' is greater than the maximum value '10.8' for the OS X 10.8 SDK.397002809#18446744073709551615#0#0(1@0"0(0#1#0"4317978624#0"0#
+lSLF07#2@18"Check dependencies397003311#397003311#0(172"[WARN]LLVM GCC 4.2 default Mac OS X deployment target '10.8.4' for architecture 'i386' and variant 'normal' is greater than the maximum value '10.8' for the OS X 10.8 SDK.1(22@165"LLVM GCC 4.2 default Mac OS X deployment target '10.8.4' for architecture 'i386' and variant 'normal' is greater than the maximum value '10.8' for the OS X 10.8 SDK.397003311#18446744073709551615#0#0(1@0"0(0#1#0"17213200128#0"0#
 
 CCompileC "build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPlugin-A75C1BDA8545CD80.o" "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp" normal i386 objective-c++ com.apple.compilers.llvmgcc42
-s397002810.001550
-e397002810.772156
+s397003311.635277
+e397003311.954587
 r1
 xCompileC
 xbuild/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPlugin-A75C1BDA8545CD80.o
@@ -511,7 +511,7 @@ xnormal
 xi386
 xobjective-c++
 xcom.apple.compilers.llvmgcc42
-lSLF07#2@96"Compile /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp397002810#397002810#0(0"0(0#0#88"/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp4317978624#1559"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    setenv LANG en_US.US-ASCII    /Xcode3/usr/bin/llvm-gcc-4.2 -x objective-c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Xcode3/SDKs/MacOSX10.8.sdk -fvisibility=hidden -fvisibility-inlines-hidden "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Notification Center.hmap" -Wmost -Wno-four-char-constants -Wno-unknown-pragmas "-F/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins" "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/include" "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/DerivedSources/i386" "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/DerivedSources" -include "/var/folders/jz/g48pnvt16wg_pzlzws5r196c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/4D Plugin_Prefix-evnoiwvdwpjpjubenfxfdlnfpeab/4D Plugin_Prefix.pch" -c "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp" -o "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPlugin-A75C1BDA8545CD80.o"0#
+lSLF07#2@96"Compile /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp397003311#397003311#0(0"0(0#0#88"/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp17213182208#1559"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    setenv LANG en_US.US-ASCII    /Xcode3/usr/bin/llvm-gcc-4.2 -x objective-c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks -Os -isysroot /Xcode3/SDKs/MacOSX10.8.sdk -fvisibility=hidden -fvisibility-inlines-hidden "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Notification Center.hmap" -Wmost -Wno-four-char-constants -Wno-unknown-pragmas "-F/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins" "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/include" "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/DerivedSources/i386" "-I/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/DerivedSources" -include "/var/folders/jz/g48pnvt16wg_pzlzws5r196c0000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/4D Plugin_Prefix-evnoiwvdwpjpjubenfxfdlnfpeab/4D Plugin_Prefix.pch" -c "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4DPlugin.cpp" -o "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPlugin-A75C1BDA8545CD80.o"0#
 
 CCompileC "build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/4DPluginAPI.o" "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/4D Plugin API/4DPluginAPI.cpp" normal i386 objective-c++ com.apple.compilers.llvmgcc42
 s397002810.000988
@@ -725,14 +725,14 @@ CCopyStringsFile "/Users/miyako/github-miyako/4d-plugin-user-notification/Notifi
 r0
 
 CLd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center" normal i386
-s397002812.059927
-e397002812.234704
+s397003311.954646
+e397003311.990348
 r1
 xLd
 x/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center
 xnormal
 xi386
-lSLF07#2@177"Link /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center397002812#397002812#0(0"0(0#0#0"4317978624#818"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    /Xcode3/usr/bin/llvm-g++-4.2 -arch i386 -bundle -isysroot /Xcode3/SDKs/MacOSX10.8.sdk "-L/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins" "-F/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins" -filelist "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/Notification Center.LinkFileList" -framework Carbon -framework Cocoa -o "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center"0#
+lSLF07#2@177"Link /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center397003311#397003311#0(0"0(0#0#0"4317978624#818"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    /Xcode3/usr/bin/llvm-g++-4.2 -arch i386 -bundle -isysroot /Xcode3/SDKs/MacOSX10.8.sdk "-L/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins" "-F/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins" -filelist "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/Objects-normal/i386/Notification Center.LinkFileList" -framework Carbon -framework Cocoa -o "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/MacOS/Notification Center"0#
 
 CProcessInfoPlistFile "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Info.plist" Info.plist
 r0
@@ -757,10 +757,10 @@ x/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Not
 lSLF07#2@202"Merge resources into /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Resources/Notification Center.rsrc397002812#397002812#0(0"0(0#0#0"4317978624#497"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    /Xcode3/Tools/ResMerger "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/build/Notification Center.build/Deployment/4D Plugin.build/ResourceManagerResources/Notification Center.rsrc" -dstIs DF -o "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle/Contents/Resources/Notification Center.rsrc"0#
 
 CTouch "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle"
-s397002812.290620
-e397002812.295686
+s397003311.990495
+e397003311.993240
 r1
 xTouch
 x/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle
-lSLF07#2@143"Touch /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle397002812#397002812#0(0"0(0#0#0"4317978624#247"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    /usr/bin/touch -c "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle"0#
+lSLF07#2@143"Touch /Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle397003311#397003311#0(0"0(0#0#0"4317978624#247"    cd "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center"    /usr/bin/touch -c "/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.4dbase/Plugins/Notification Center.bundle"0#
 
