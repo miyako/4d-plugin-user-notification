@@ -14,7 +14,10 @@
 
 #import "listener.h"
 
-UserNotificationListener *listener = nil;
+namespace UserNotification
+{
+    UserNotificationListener *listener = nil;
+};
 
 #define Notification_display_always 1
 #define Notification_system_decides 0
@@ -81,6 +84,46 @@ void CommandDispatcher (int32_t pProcNum, sLONG_PTR *pResult, PackagePtr pParams
 	}
 }
 
+#pragma mark -
+
+NSDictionary *PA_createDictionaryFromString(NSString *string){
+    
+    NSDictionary *dictionary = nil;
+    
+    if(string){
+        CFPropertyListRef pList = CFPropertyListCreateFromXMLData(kCFAllocatorDefault,
+                                                                  (CFDataRef)[string dataUsingEncoding:NSUTF8StringEncoding],
+                                                                  kCFPropertyListImmutable,
+                                                                  NULL);
+        if(pList){
+            if(CFGetTypeID(pList) == CFDictionaryGetTypeID()){
+                dictionary = (NSDictionary *)pList;
+            }
+        }
+    }
+    
+    return dictionary;
+}
+
+NSString *PA_createStringFromDictionary(NSDictionary *dictionary){
+    
+    NSString *string = nil;
+	
+	if(dictionary){
+		CFPropertyListRef pList = CFPropertyListCreateDeepCopy(kCFAllocatorDefault, 
+															   (CFDictionaryRef)dictionary, 
+															   kCFPropertyListImmutable);
+		if(pList){
+			NSData *dictionaryData = (NSData *)CFPropertyListCreateXMLData(kCFAllocatorDefault, pList);
+			string = [[NSString alloc]initWithData:dictionaryData encoding:NSUTF8StringEncoding];
+			[dictionaryData release];
+			CFRelease(pList);	
+		}
+	}
+	
+    return string;
+}
+
 // ------------------------------ Notification Center -----------------------------
 
 #pragma mark -
@@ -98,11 +141,11 @@ void NOTIFICATION_SET_MODE(sLONG_PTR *pResult, PackagePtr pParams)
 	Param1.fromParamAtIndex(pParams, 1);
 	listenerMode = Param1.getIntValue();
 	
-	if(listener){
+	if(UserNotification::listener){
 		if(listenerMode == Notification_display_always){
-			[listener presentNotification:YES];
+			[UserNotification::listener presentNotification:YES];
 		}else{
-			[listener presentNotification:NO];				
+			[UserNotification::listener presentNotification:NO];				
 		}
 	}
 }
@@ -127,27 +170,27 @@ void NOTIFICATION_SET_METHOD(sLONG_PTR *pResult, PackagePtr pParams)
 		
 		if(methodId){
 		
-			if(!listener){		
+			if(!UserNotification::listener){		
 				
 				int listenerProcessNumber = PA_NewProcess((void *)listenerLoop, -512*1024, @"$User Notification Listener");
 				
-				listener = [[UserNotificationListener alloc]
+				UserNotification::listener = [[UserNotificationListener alloc]
 							initWithMethodName:methodName
 							methodId:[NSNumber numberWithInt:methodId]
 							processNumber:[NSNumber numberWithInt:listenerProcessNumber]];
 				
 				if(listenerMode == Notification_display_always){
-					[listener presentNotification:YES];
+					[UserNotification::listener presentNotification:YES];
 				}else{
-					[listener presentNotification:NO];				
+					[UserNotification::listener presentNotification:NO];				
 				}
 				
 				NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-				center.delegate = listener;
+				center.delegate = UserNotification::listener;
 				
 			}else{
-				listener.listenerMethodName = methodName;				
-				listener.listenerMethodId = [NSNumber numberWithInt:methodId];				
+				UserNotification::listener.listenerMethodName = methodName;				
+				UserNotification::listener.listenerMethodId = [NSNumber numberWithInt:methodId];				
 			}
 			
 		}
@@ -160,8 +203,8 @@ void NOTIFICATION_Get_method(sLONG_PTR *pResult, PackagePtr pParams)
 {
 	C_TEXT returnValue;
 
-	if(listener)
-		returnValue.setUTF16String(listener.listenerMethodName);
+	if(UserNotification::listener)
+		returnValue.setUTF16String(UserNotification::listener.listenerMethodName);
 
 	returnValue.setReturn(pResult);
 }
@@ -289,13 +332,13 @@ void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 	
 void listenerLoopFinish(){
 
-	if(listener)
+	if(UserNotification::listener)
 	{
 		NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
 		center.delegate = nil;
 		
-		[listener terminate];
-		listener = nil;
+		[UserNotification::listener terminate];
+		UserNotification::listener = nil;
 	}	
 
 }
@@ -310,16 +353,16 @@ void listenerLoopExecuteMethodByID()
 	params[4] = PA_CreateVariable(eVK_Unistring);	
 	params[5] = PA_CreateVariable(eVK_Unistring);					
 	
-	PA_Unistring u1 = PA_setUnistringVariable(&params[0], listener.title);
-	PA_Unistring u2 = PA_setUnistringVariable(&params[1], listener.subtitle);
-	PA_Unistring u3 = PA_setUnistringVariable(&params[2], listener.informativeText);
-	PA_Unistring u4 = PA_setUnistringVariable(&params[3], listener.notificationType);				
-	PA_Unistring u5 = PA_setUnistringVariable(&params[4], listener.activationType);		
-	PA_Unistring u6 = PA_setUnistringVariable(&params[5], listener.userInfo);	
+	PA_Unistring u1 = PA_setUnistringVariable(&params[0], UserNotification::listener.title);
+	PA_Unistring u2 = PA_setUnistringVariable(&params[1], UserNotification::listener.subtitle);
+	PA_Unistring u3 = PA_setUnistringVariable(&params[2], UserNotification::listener.informativeText);
+	PA_Unistring u4 = PA_setUnistringVariable(&params[3], UserNotification::listener.notificationType);				
+	PA_Unistring u5 = PA_setUnistringVariable(&params[4], UserNotification::listener.activationType);		
+	PA_Unistring u6 = PA_setUnistringVariable(&params[5], UserNotification::listener.userInfo);	
 	
-	PA_ExecuteMethodByID([listener.listenerMethodId intValue], params, 6);
+	PA_ExecuteMethodByID([UserNotification::listener.listenerMethodId intValue], params, 6);
 	
-	[listener unlock];
+	[UserNotification::listener unlock];
 	
 	PA_DisposeUnistring(&u1);
 	PA_DisposeUnistring(&u2);
@@ -340,11 +383,11 @@ void listenerLoop(){
 	while (!done)
 	{ 
 		PA_YieldAbsolute();
-		done = (PA_IsProcessDying()) || ([listener shouldTerminate]);
+		done = (PA_IsProcessDying()) || ([UserNotification::listener shouldTerminate]);
 		
 		if (!done){		
 			
-			PA_NewProcess((void *)listenerLoopExecuteMethodByID, 512*1024, listener.notificationType);
+			PA_NewProcess((void *)listenerLoopExecuteMethodByID, 512*1024, UserNotification::listener.notificationType);
 			
 			PA_FreezeProcess(listenerProcessNumber);
 			
