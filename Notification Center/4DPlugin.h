@@ -23,6 +23,22 @@ void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams);
 void listenerLoopFinish();
 void listenerLoop();
 
+#ifndef NSFoundationVersionNumber10_4
+#define NSFoundationVersionNumber10_4	567.00
+#endif
+
+#ifndef NSFoundationVersionNumber10_5
+#define NSFoundationVersionNumber10_5	677.00
+#endif
+
+#ifndef NSFoundationVersionNumber10_6
+#define NSFoundationVersionNumber10_6 751.00
+#endif
+
+#ifndef NSFoundationVersionNumber10_7
+#define NSFoundationVersionNumber10_7 833.10
+#endif
+
 #ifndef NSFoundationVersionNumber10_8
 #define NSFoundationVersionNumber10_8 945.00
 #endif

@@ -185,7 +185,7 @@ void NOTIFICATION_SET_METHOD(sLONG_PTR *pResult, PackagePtr pParams)
 					[UserNotification::listener presentNotification:NO];				
 				}
 				
-                if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+                if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_7)
                 { 
                     NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
                     center.delegate = UserNotification::listener;
@@ -290,7 +290,7 @@ NSUserNotification *createNotification(sLONG_PTR *pResult, PackagePtr pParams)
 
 void DELIVER_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 {
-   if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+   if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_7)
    {
        NSUserNotification *notification = createNotification(pResult, pParams);
 	
@@ -302,7 +302,7 @@ void DELIVER_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 
 void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 {
-    if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+    if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_7)
     { 
         NSUserNotification *notification = createNotification(pResult, pParams);	
         
@@ -342,7 +342,7 @@ void listenerLoopFinish(){
 
 	if(UserNotification::listener)
 	{
-        if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+        if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_7)
         {
             NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
             center.delegate = nil;
