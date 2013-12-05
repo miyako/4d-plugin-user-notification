@@ -275,8 +275,6 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>6</integer>
-									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -328,7 +326,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D17E6B9A17FAF1A70028B063</string>
+										<string>D1E4F1E918434F150077CBA6</string>
 										<key>history</key>
 										<array>
 											<string>D186B0DA179A8B79004AEEB6</string>
@@ -338,7 +336,7 @@
 											<string>D14B186417ED349A00F0C298</string>
 											<string>D17E6B6717FAF04E0028B063</string>
 											<string>D17E6B9617FAF1240028B063</string>
-											<string>D17E6B9717FAF1240028B063</string>
+											<string>D17E6B9A17FAF1A70028B063</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -350,14 +348,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {764, 571}}</string>
+								<string>{{0, 0}, {764, 567}}</string>
 								<key>RubberWindowFrame</key>
 								<string>421 144 972 734 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>571pt</string>
+							<string>567pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -365,19 +363,19 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20506471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>詳細</string>
+								<string>Detail</string>
 							</dict>
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 576}, {764, 117}}</string>
+								<string>{{0, 572}, {764, 121}}</string>
 								<key>RubberWindowFrame</key>
 								<string>421 144 972 734 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>117pt</string>
+							<string>121pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -396,9 +394,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D17E6B7F17FAF0840028B063</string>
+				<string>D1E4F1EA18434F150077CBA6</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>D17E6B8017FAF0840028B063</string>
+				<string>D1E4F1EB18434F150077CBA6</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -536,8 +534,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>D17E6B9917FAF1240028B063</string>
-		<string>D17E6B6C17FAF04E0028B063</string>
 		<string>D186B095179A8491004AEEB6</string>
 		<string>/Users/miyako/github-miyako/4d-plugin-user-notification/Notification Center/Notification Center.xcodeproj</string>
 	</array>
@@ -563,7 +559,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>4DPlugin.cpp</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -580,14 +576,12 @@
 							<string>218pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ビルド結果</string>
+								<string>Build Results</string>
 								<key>XCBuildResultsTrigger_Collapse</key>
 								<integer>1021</integer>
 								<key>XCBuildResultsTrigger_Open</key>
@@ -621,7 +615,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>D186B095179A8491004AEEB6</string>
-				<string>D17E6B8317FAF0840028B063</string>
+				<string>D1E4F1EC18434F150077CBA6</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -634,7 +628,7 @@
 			<key>WindowToolGUID</key>
 			<string>D186B095179A8491004AEEB6</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

@@ -98,8 +98,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 402321522;
-			PBXWorkspaceStateSaveDate = 402321522;
+			PBXPerProjectTemplateStateSaveDate = 407064332;
+			PBXWorkspaceStateSaveDate = 407064332;
 		};
 		perUserProjectItems = {
 			D12DF262179AAAEF00384ECD /* PBXTextBookmark */ = D12DF262179AAAEF00384ECD /* PBXTextBookmark */;
@@ -108,9 +108,9 @@
 			D14B186417ED349A00F0C298 /* PBXTextBookmark */ = D14B186417ED349A00F0C298 /* PBXTextBookmark */;
 			D17E6B6717FAF04E0028B063 /* PBXTextBookmark */ = D17E6B6717FAF04E0028B063 /* PBXTextBookmark */;
 			D17E6B9617FAF1240028B063 /* PBXTextBookmark */ = D17E6B9617FAF1240028B063 /* PBXTextBookmark */;
-			D17E6B9717FAF1240028B063 /* XCBuildMessageTextBookmark */ = D17E6B9717FAF1240028B063 /* XCBuildMessageTextBookmark */;
 			D17E6B9A17FAF1A70028B063 /* PBXTextBookmark */ = D17E6B9A17FAF1A70028B063 /* PBXTextBookmark */;
 			D186B0DA179A8B79004AEEB6 /* PBXTextBookmark */ = D186B0DA179A8B79004AEEB6 /* PBXTextBookmark */;
+			D1E4F1E918434F150077CBA6 /* PBXTextBookmark */ = D1E4F1E918434F150077CBA6 /* PBXTextBookmark */;
 		};
 		sourceControlManager = D186B097179A8491004AEEB6 /* Source Control */;
 		userBuildSettings = {
@@ -142,9 +142,9 @@
 	};
 	18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {873, 5395}}";
-			sepNavSelRange = "{4746, 0}";
-			sepNavVisRange = "{4440, 544}";
+			sepNavIntBoundsRect = "{{0, 0}, {887, 5382}}";
+			sepNavSelRange = "{3438, 0}";
+			sepNavVisRange = "{2895, 923}";
 			sepNavWindowFrame = "{{544, 197}, {849, 681}}";
 		};
 	};
@@ -224,15 +224,6 @@
 		rType = 0;
 		vrLen = 736;
 		vrLoc = 0;
-	};
-	D17E6B9717FAF1240028B063 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "'listener' was not declared in this scope";
-		fRef = 18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 143;
-		rType = 1;
 	};
 	D17E6B9A17FAF1A70028B063 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -361,5 +352,15 @@
 		name = 4D.app;
 		path = "/Applications/4D v12/12.5 (HF3)/4D.app";
 		sourceTree = "<absolute>";
+	};
+	D1E4F1E918434F150077CBA6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 18B684FE06944F8800CC6A1E /* 4DPlugin.cpp */;
+		name = "4DPlugin.cpp: 144";
+		rLen = 0;
+		rLoc = 3438;
+		rType = 0;
+		vrLen = 923;
+		vrLoc = 2895;
 	};
 }
