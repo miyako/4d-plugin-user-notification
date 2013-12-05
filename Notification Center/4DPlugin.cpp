@@ -185,9 +185,12 @@ void NOTIFICATION_SET_METHOD(sLONG_PTR *pResult, PackagePtr pParams)
 					[UserNotification::listener presentNotification:NO];				
 				}
 				
-				NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-				center.delegate = UserNotification::listener;
-				
+                if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+                { 
+                    NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
+                    center.delegate = UserNotification::listener;
+				}
+                
 			}else{
 				UserNotification::listener.listenerMethodName = methodName;				
 				UserNotification::listener.listenerMethodId = [NSNumber numberWithInt:methodId];				
@@ -287,45 +290,50 @@ NSUserNotification *createNotification(sLONG_PTR *pResult, PackagePtr pParams)
 
 void DELIVER_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	NSUserNotification *notification = createNotification(pResult, pParams);
+   if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+   {
+       NSUserNotification *notification = createNotification(pResult, pParams);
 	
-	[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+       [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 	
-	[notification release];
+       [notification release];
+   }
 }
 
 void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	NSUserNotification *notification = createNotification(pResult, pParams);	
-	
-	C_DATE Param8;
-	C_TIME Param9;
-	C_TEXT Param10;
+    if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+    { 
+        NSUserNotification *notification = createNotification(pResult, pParams);	
+        
+        C_DATE Param8;
+        C_TIME Param9;
+        C_TEXT Param10;
 
-	Param8.fromParamAtIndex(pParams, 8);
-	Param9.fromParamAtIndex(pParams, 9);
-	Param10.fromParamAtIndex(pParams, 10);
-		
-	NSString *deliveryTimeZone = Param10.copyUTF16String();
-	NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:deliveryTimeZone];
-    if(!timeZone) timeZone = [NSTimeZone defaultTimeZone];
-	
-	NSDateComponents *components = [[NSDateComponents alloc]init];
-    [components setDay:Param8.getDay()];
-    [components setMonth:Param8.getMonth()];
-    [components setYear:Param8.getYear()];
-	
-    [components setSecond:Param9.getSeconds()];
-	
-	NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
-    notification.deliveryDate = [gregorian dateFromComponents:components];
-    [gregorian release];
-    [components release];
-	
-	[[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
+        Param8.fromParamAtIndex(pParams, 8);
+        Param9.fromParamAtIndex(pParams, 9);
+        Param10.fromParamAtIndex(pParams, 10);
+            
+        NSString *deliveryTimeZone = Param10.copyUTF16String();
+        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:deliveryTimeZone];
+        if(!timeZone) timeZone = [NSTimeZone defaultTimeZone];
+        
+        NSDateComponents *components = [[NSDateComponents alloc]init];
+        [components setDay:Param8.getDay()];
+        [components setMonth:Param8.getMonth()];
+        [components setYear:Param8.getYear()];
+        
+        [components setSecond:Param9.getSeconds()];
+        
+        NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+        notification.deliveryDate = [gregorian dateFromComponents:components];
+        [gregorian release];
+        [components release];
+        
+        [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:notification];
 
-	[notification release];
-
+        [notification release];
+    }
 }
 
 #pragma mark -
@@ -334,8 +342,11 @@ void listenerLoopFinish(){
 
 	if(UserNotification::listener)
 	{
-		NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-		center.delegate = nil;
+        if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+        {
+            NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
+            center.delegate = nil;
+        }
 		
 		[UserNotification::listener terminate];
 		UserNotification::listener = nil;
