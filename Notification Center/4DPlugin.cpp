@@ -366,11 +366,11 @@ void listenerLoopFinish()
 		[UN::listener release];
 		UN::listener = nil;
 		//tell listener to die
-		while(UN::MONITOR_PROCESS_ID)
-		{
-			PA_YieldAbsolute();
+//		while(UN::MONITOR_PROCESS_ID)
+//		{
+//			PA_YieldAbsolute();
 			PA_UnfreezeProcess(UN::MONITOR_PROCESS_ID);
-		}
+//		}
 	}
 }
 
