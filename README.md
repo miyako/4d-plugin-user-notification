@@ -9,19 +9,9 @@ Send Mac OS X Mountain Lion Local User Notification from 4D.
 |:------:|:-----:|:---------:|:---------:|
 |<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|||
 
-## Commands
+### Releases
 
-```c
-// --- Notification Center
-NOTIFICATION_Get_mode
-NOTIFICATION_SET_MODE
-NOTIFICATION_SET_METHOD
-NOTIFICATION_Get_method
-
-// --- Notification
-DELIVER_NOTIFICATION
-SCHEDULE_NOTIFICATION
-```
+[1.2](https://github.com/miyako/4d-plugin-user-notification/releases/tag/1.2)
 
 ## Examples
 
