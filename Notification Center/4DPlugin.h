@@ -8,7 +8,7 @@
  #
  # --------------------------------------------------------------------------------*/
 
-
+#include <mutex>
 
 // --- Notification Center
 void NOTIFICATION_Get_mode(sLONG_PTR *pResult, PackagePtr pParams);
@@ -43,11 +43,14 @@ void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams);
 #define NSFoundationVersionNumber10_8 945.00
 #endif
 
+void listener_end();
+
 void listenerInit(void);
 void listenerLoop(void);
 void listenerLoopStart(void);
 void listenerLoopFinish(void);
 void listenerLoopExecute(void);
+void listenerLoopExecuteMethod();
 
 typedef PA_long32 process_number_t;
 typedef PA_long32 process_stack_size_t;

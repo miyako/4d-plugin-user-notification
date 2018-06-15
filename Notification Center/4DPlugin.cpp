@@ -12,6 +12,11 @@
 #include "4DPluginAPI.h"
 #include "4DPlugin.h"
 
+#define CALLBACK_IN_NEW_PROCESS 0
+#define CALLBACK_SLEEP_TIME 59
+
+#define MAX_USERINFO_LENGTH 1000
+
 #pragma mark -
 
 @interface Listener : NSObject <NSUserNotificationCenterDelegate>
@@ -36,12 +41,13 @@ namespace UN
     process_name_t MONITOR_PROCESS_NAME = (PA_Unichar *)"$\0U\0s\0e\0r\0 \0N\0o\0t\0i\0f\0i\0c\0a\0t\0i\0o\0n\0 \0L\0i\0s\0t\0e\0n\0e\0r\0\0\0";
 		process_number_t MONITOR_PROCESS_ID = 0;
     process_stack_size_t MONITOR_PROCESS_STACK_SIZE = 0;
-    method_id_t CALLBACK_METHOD_ID = 0;
 		event_id_t CALLBACK_EVENT_ID = 0;
 		C_TEXT LISTENER_METHOD;
 		bool MONITOR_PROCESS_SHOULD_TERMINATE;
 		std::vector<event_id_t>CALLBACK_EVENT_IDS;
 		BOOL shouldPresentNotification = YES;
+	
+		bool PROCESS_SHOULD_RESUME = false;
 	
 		PA_Unistring setUnistringVariable(PA_Variable *v, NSString *s)
 		{
@@ -52,46 +58,25 @@ namespace UN
 			return u;
 		}
 
-		NSString *copyDictionaryString(NSDictionary *dictionary)
+		NSString *getDictionaryString(NSDictionary *dictionary)
 		{
-			NSString *string = nil;
-	
-			if(dictionary)
-			{
-				CFPropertyListRef pList = CFPropertyListCreateDeepCopy(kCFAllocatorDefault,
-																	 (CFDictionaryRef)dictionary, 
-																	 kCFPropertyListImmutable);
-				if(pList)
-				{
-					NSData *dictionaryData = (NSData *)CFPropertyListCreateXMLData(kCFAllocatorDefault, pList);
-					string = [[NSString alloc]initWithData:dictionaryData encoding:NSUTF8StringEncoding];
-					[dictionaryData release];
-					CFRelease(pList);	
-				}
-			}
-			return string;
+			return dictionary ? [dictionary objectForKey:@"userInfo"]: @"";
 		}
 	
-		NSDictionary *copyStringDictionary(NSString *string)
+		NSDictionary *makeStringDictionary(NSString *string)
 		{
-			NSDictionary *dictionary = nil;
-    
-    if(string)
-		{
-        CFPropertyListRef pList = CFPropertyListCreateFromXMLData(kCFAllocatorDefault,
-																		(CFDataRef)[string dataUsingEncoding:NSUTF8StringEncoding],
-																		kCFPropertyListImmutable,
-																		NULL);
-			if(pList)
+			
+			NSDictionary *dictionary;
+			if((string) && ([string length] < MAX_USERINFO_LENGTH))
 			{
-					if(CFGetTypeID(pList) == CFDictionaryGetTypeID())
-					{
-							dictionary = (NSDictionary *)pList;
-					}
+				dictionary = [NSDictionary dictionaryWithObject:string forKey:@"userInfo"];
+			}else
+			{
+				dictionary = [NSDictionary dictionaryWithObject:@"" forKey:@"userInfo"];
 			}
-    }
-    return dictionary;
-}
+			
+			return dictionary;
+		}
 	
 		NSUserNotification *createNotification(sLONG_PTR *pResult, PackagePtr pParams)
 		{
@@ -118,11 +103,11 @@ namespace UN
 			[title release];
 			
 			NSString *subtitle = Param2.copyUTF16String();
-				notification.subtitle = subtitle;
+			notification.subtitle = subtitle;
 			[subtitle release];
 			
 			NSString *informativeText = Param3.copyUTF16String();
-				notification.informativeText = informativeText;
+			notification.informativeText = informativeText;
 			[informativeText release];
 			
 			if(!Param4.getUTF16Length()){
@@ -137,20 +122,14 @@ namespace UN
 				[soundName release];
 			}	
 			
-			if(Param5.getUTF16Length()){
-				NSString *userInfo = Param5.copyUTF16String();
-				NSDictionary *dictionary = UN::copyStringDictionary(userInfo);
-						if(dictionary){
-								notification.userInfo = dictionary;
-								[dictionary release];
-						}
-				[userInfo release];
-			}	
+			NSString *userInfo = Param5.copyUTF16String();
+			notification.userInfo = UN::makeStringDictionary(userInfo);
+			[userInfo release];
 			
 			if(!Param6.getUTF16Length()){
 				notification.hasActionButton = NO;	
 			}else{
-					notification.hasActionButton = YES;
+				notification.hasActionButton = YES;
 				NSString *actionButtonTitle = Param6.copyUTF16String();
 				notification.actionButtonTitle = actionButtonTitle;
 				[actionButtonTitle release];
@@ -185,12 +164,16 @@ namespace UN
 
 - (void)dealloc
 {
-    [[[NSWorkspace sharedWorkspace] notificationCenter]removeObserver:self];
-		UN::CALLBACK_EVENT_IDS.clear();
+	[[[NSWorkspace sharedWorkspace] notificationCenter]removeObserver:self];
 	
-		[eventContexts release];
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
 	
-    [super dealloc];
+	UN::CALLBACK_EVENT_IDS.clear();
+	
+	[eventContexts release];
+	
+	[super dealloc];
 }
 
 - (void)removeOldestEventContext
@@ -212,25 +195,15 @@ namespace UN
 
 - (void)setEventContext:(NSUserNotification *)notification notificationType:(NSString *)notificationType activationType:(NSString *)activationType
 {
-	NSString *userInfo;
-	if(notification.userInfo)
-	{
-		userInfo = UN::copyDictionaryString(notification.userInfo);
-	}else
-	{
-		userInfo = @"";
-	}
-
-	NSDictionary *eventContext = [[NSDictionary alloc]initWithObjectsAndKeys:
-    @"title", notification.title,
-		@"subtitle", notification.subtitle,
-		@"informativeText", notification.informativeText,
-		@"notificationType", notificationType,
-		@"activationType", activationType,
-		@"userInfo", userInfo,
-		nil];
+	NSString *userInfo = UN::getDictionaryString(notification.userInfo);
 	
-	[userInfo release];
+	NSDictionary *eventContext = [[NSDictionary alloc]initWithObjectsAndKeys:
+    notification.title, @"title",
+		notification.subtitle, @"subtitle",
+		notification.informativeText, @"informativeText",
+		notificationType, @"notificationType",
+		activationType, @"activationType",
+		userInfo, @"userInfo", nil];
 	
 	[eventContexts addObject:eventContext];
 	
@@ -266,9 +239,16 @@ namespace UN
 
 - (void)call:(event_id_t)event
 {
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	if(UN::LISTENER_METHOD.getUTF16Length())
+	{
 		UN::CALLBACK_EVENT_ID = event;
 		UN::CALLBACK_EVENT_IDS.push_back(UN::CALLBACK_EVENT_ID);
-    PA_UnfreezeProcess(UN::MONITOR_PROCESS_ID);
+		
+		UN::PROCESS_SHOULD_RESUME = true;
+	}
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
@@ -310,125 +290,224 @@ void OnStartup()
 
 void OnCloseProcess()
 {
-    if(IsProcessOnExit())
-				{
-        PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listenerLoopFinish, NULL); 
-    }
+	if(IsProcessOnExit())
+	{
+		listenerLoopFinish();
+	}
 }
 
 void listenerLoop()
 {
-    UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
-        
-    while(!UN::MONITOR_PROCESS_SHOULD_TERMINATE)
+	if(1)
+	{
+		std::mutex m;
+		std::lock_guard<std::mutex> lock(m);
+
+		UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
+	}
+
+    while(!PA_IsProcessDying())//(!UN::MONITOR_PROCESS_SHOULD_TERMINATE)
     {
 			PA_YieldAbsolute();
-			while(UN::CALLBACK_EVENT_IDS.size())
-			{
-				PA_YieldAbsolute();
-				C_TEXT processName;
-				generateUuid(processName);
-				PA_NewProcess((void *)listenerLoopExecute,
-				UN::MONITOR_PROCESS_STACK_SIZE,
-				(PA_Unichar *)processName.getUTF16StringPtr());
 			
-				if(UN::MONITOR_PROCESS_SHOULD_TERMINATE)
-							break;
+			std::mutex m;
+			std::lock_guard<std::mutex> lock(m);
+			
+			if(UN::PROCESS_SHOULD_RESUME)
+			{
+				while(UN::CALLBACK_EVENT_IDS.size())
+				{
+					PA_YieldAbsolute();
+					
+					if(CALLBACK_IN_NEW_PROCESS)
+					{
+						C_TEXT processName;
+						generateUuid(processName);
+						PA_NewProcess((void *)listenerLoopExecuteMethod,
+													UN::MONITOR_PROCESS_STACK_SIZE,
+													(PA_Unichar *)processName.getUTF16StringPtr());
+					}else
+					{
+						listenerLoopExecuteMethod();
+					}
+					
+					if(UN::MONITOR_PROCESS_SHOULD_TERMINATE)
+						break;
+				}
+				
+				UN::PROCESS_SHOULD_RESUME = false;
+				
+			}else
+			{
+				PA_PutProcessToSleep(PA_GetCurrentProcessNumber(), CALLBACK_SLEEP_TIME);
 			}
+			
+			if(UN::MONITOR_PROCESS_SHOULD_TERMINATE)
+				break;
 
-			if(!UN::MONITOR_PROCESS_SHOULD_TERMINATE){
-					PA_FreezeProcess(PA_GetCurrentProcessNumber());  
-			}else{
-					UN::MONITOR_PROCESS_ID = 0;
-			}
-    }
-    PA_KillProcess();
+		}
+	
+	PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_end, NULL);
+	
+	if(1)
+	{
+		std::mutex m;
+		std::lock_guard<std::mutex> lock(m);
+
+		UN::LISTENER_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
+	}
+	
+	PA_KillProcess();
+}
+
+void listener_start()
+{
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	if(!UN::listener)
+	{
+		UN::listener = [[Listener alloc]init];
+	}
+	
+}
+
+void listener_end()
+{
+	/* must do this in main process */
+	[UN::listener release];
+	UN::listener = nil;
 }
 
 void listenerLoopStart()
 {
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	/* since v17 it is not allowed to call PA_NewProcess() in main process */
 	if(!UN::MONITOR_PROCESS_ID)
 	{
-		UN::listener = [[Listener alloc]init];
-		UN::MONITOR_PROCESS_ID = PA_NewProcess((void *)listenerLoop, UN::MONITOR_PROCESS_STACK_SIZE, UN::MONITOR_PROCESS_NAME);
+		UN::MONITOR_PROCESS_ID = PA_NewProcess((void *)listenerLoop,
+																					 UN::MONITOR_PROCESS_STACK_SIZE,
+																					 UN::MONITOR_PROCESS_NAME);
 	}
 }
 
 void listenerLoopFinish()
 {
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
 	if(UN::MONITOR_PROCESS_ID)
 	{
-		//set flags
 		UN::MONITOR_PROCESS_SHOULD_TERMINATE = true;
+		
 		PA_YieldAbsolute();
-		UN::LISTENER_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
-		UN::CALLBACK_METHOD_ID = 0;
-		[UN::listener release];
-		UN::listener = nil;
-		//tell listener to die
-//		while(UN::MONITOR_PROCESS_ID)
-//		{
-//			PA_YieldAbsolute();
-			PA_UnfreezeProcess(UN::MONITOR_PROCESS_ID);
-//		}
+		
+		UN::PROCESS_SHOULD_RESUME = true;
 	}
 }
 
 void listenerLoopExecute()
 {
-		std::vector<event_id_t>::iterator e = UN::CALLBACK_EVENT_IDS.begin();
-
-    if(UN::CALLBACK_METHOD_ID)
-		{
-			PA_Variable	params[6];
-			params[0] = PA_CreateVariable(eVK_Unistring);		
-			params[1] = PA_CreateVariable(eVK_Unistring);
-			params[2] = PA_CreateVariable(eVK_Unistring);					
-			params[3] = PA_CreateVariable(eVK_Unistring);	
-			params[4] = PA_CreateVariable(eVK_Unistring);	
-			params[5] = PA_CreateVariable(eVK_Unistring);
-
-			NSDictionary *eventContext = [UN::listener getOldestEventContext];
-			NSString *title = @"";
-			NSString *subtitle = @"";
-			NSString *informativeText = @"";
-			NSString *notificationType = @"";
-			NSString *activationType = @"";
-			NSString *userInfo = @"";
-			
-			if(eventContext)
-			{
-				title = [eventContext objectForKey:@"title"];
-				subtitle = [eventContext objectForKey:@"subtitle"];
-				informativeText = [eventContext objectForKey:@"informativeText"];
-				notificationType = [eventContext objectForKey:@"notificationType"];
-				activationType = [eventContext objectForKey:@"activationType"];
-				userInfo = [eventContext objectForKey:@"userInfo"];
-				[UN::listener removeOldestEventContext];
-			}
-		
-			UN::setUnistringVariable(&params[0], title);
-			UN::setUnistringVariable(&params[1], subtitle);
-			UN::setUnistringVariable(&params[2], informativeText);
-			UN::setUnistringVariable(&params[3], notificationType);
-			UN::setUnistringVariable(&params[4], activationType);
-			UN::setUnistringVariable(&params[5], userInfo);
-
-			//the method could be paused or traced
-			UN::CALLBACK_EVENT_IDS.erase(e);
-			PA_ExecuteMethodByID(UN::CALLBACK_METHOD_ID, params, 6);
-			
-			PA_ClearVariable(&params[0]);
-			PA_ClearVariable(&params[1]);
-			PA_ClearVariable(&params[2]);
-			PA_ClearVariable(&params[3]);
-			PA_ClearVariable(&params[4]);
-			PA_ClearVariable(&params[5]);
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
 	
-    }else
+	UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
+	UN::PROCESS_SHOULD_RESUME = true;
+}
+
+void listenerLoopExecuteMethod()
+{
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	std::vector<event_id_t>::iterator e = UN::CALLBACK_EVENT_IDS.begin();
+	
+	NSDictionary *eventContext = [UN::listener getOldestEventContext];
+	
+	@autoreleasepool
+	{
+		if(eventContext)
 		{
-		//the method could have been removed
-		UN::CALLBACK_EVENT_IDS.erase(e);
+			NSString *title = [eventContext objectForKey:@"title"];
+			NSString *subtitle = [eventContext objectForKey:@"subtitle"];
+			NSString *notificationType = [eventContext objectForKey:@"notificationType"];
+			NSString *activationType = [eventContext objectForKey:@"activationType"];
+			
+			/* for some reason these two crash (not NSString?) */
+			NSString *informativeText = [NSString stringWithString:[eventContext objectForKey:@"informativeText"]];
+			NSString *userInfo = [NSString stringWithString:[eventContext objectForKey:@"userInfo"]];
+			
+			method_id_t methodId = PA_GetMethodID((PA_Unichar *)UN::LISTENER_METHOD.getUTF16StringPtr());
+			
+			if(methodId)
+			{
+				PA_Variable	params[6];
+				params[0] = PA_CreateVariable(eVK_Unistring);
+				params[1] = PA_CreateVariable(eVK_Unistring);
+				params[2] = PA_CreateVariable(eVK_Unistring);
+				params[3] = PA_CreateVariable(eVK_Unistring);
+				params[4] = PA_CreateVariable(eVK_Unistring);
+				params[5] = PA_CreateVariable(eVK_Unistring);
+				
+				UN::setUnistringVariable(&params[0], title);
+				UN::setUnistringVariable(&params[1], subtitle);
+				UN::setUnistringVariable(&params[2], informativeText);
+				UN::setUnistringVariable(&params[3], notificationType);
+				UN::setUnistringVariable(&params[4], activationType);
+				UN::setUnistringVariable(&params[5], userInfo);
+				
+				//the method could be paused or traced
+				UN::CALLBACK_EVENT_IDS.erase(e);
+				
+				PA_ExecuteMethodByID(methodId, params, 6);
+				
+				PA_ClearVariable(&params[0]);
+				PA_ClearVariable(&params[1]);
+				PA_ClearVariable(&params[2]);
+				PA_ClearVariable(&params[3]);
+				PA_ClearVariable(&params[4]);
+				PA_ClearVariable(&params[5]);
+				
+			}else
+			{
+				PA_Variable	params[7];
+				params[1] = PA_CreateVariable(eVK_Unistring);
+				params[2] = PA_CreateVariable(eVK_Unistring);
+				params[3] = PA_CreateVariable(eVK_Unistring);
+				params[4] = PA_CreateVariable(eVK_Unistring);
+				params[5] = PA_CreateVariable(eVK_Unistring);
+				params[6] = PA_CreateVariable(eVK_Unistring);
+				
+				UN::setUnistringVariable(&params[0], title);
+				UN::setUnistringVariable(&params[1], subtitle);
+				UN::setUnistringVariable(&params[2], informativeText);
+				UN::setUnistringVariable(&params[3], notificationType);
+				UN::setUnistringVariable(&params[4], activationType);
+				UN::setUnistringVariable(&params[5], userInfo);
+				
+				params[0] = PA_CreateVariable(eVK_Unistring);
+				PA_Unistring method = PA_CreateUnistring((PA_Unichar *)UN::LISTENER_METHOD.getUTF16StringPtr());
+				PA_SetStringVariable(&params[0], &method);
+				
+				//the method could have been removed
+				UN::CALLBACK_EVENT_IDS.erase(e);
+				
+				PA_ExecuteCommandByID(1007, params, 7);
+				
+				PA_ClearVariable(&params[0]);
+				PA_ClearVariable(&params[1]);
+				PA_ClearVariable(&params[2]);
+				PA_ClearVariable(&params[3]);
+				PA_ClearVariable(&params[4]);
+				PA_ClearVariable(&params[5]);
+				PA_ClearVariable(&params[6]);
+				
+			}
+			
+			[UN::listener removeOldestEventContext];
+		}
 	}
 }
 
@@ -493,82 +572,46 @@ void CommandDispatcher (PA_long32 pProcNum, sLONG_PTR *pResult, PackagePtr pPara
 	}
 }
 
+#pragma mark -
+
 // ------------------------------ Notification Center -----------------------------
-
-
-void NOTIFICATION_Get_mode(sLONG_PTR *pResult, PackagePtr pParams)
-{
-	C_LONGINT returnValue;
-	returnValue.setIntValue(UN::shouldPresentNotification);
-	returnValue.setReturn(pResult);
-}
-
-void NOTIFICATION_SET_MODE(sLONG_PTR *pResult, PackagePtr pParams)
-{
-	C_LONGINT Param1;
-	Param1.fromParamAtIndex(pParams, 1);
-	UN::shouldPresentNotification = Param1.getIntValue();
-}
 
 void NOTIFICATION_SET_METHOD(sLONG_PTR *pResult, PackagePtr pParams)
 {
 	C_TEXT Param1;
 	C_LONGINT returnValue;
 
-	Param1.fromParamAtIndex(pParams, 1);
-
-	NSString *methodName = Param1.copyUTF16String();
-
-	if(!Param1.getUTF16Length())
+	if(!IsProcessOnExit())
 	{
-		//empty string passed
-		returnValue.setIntValue(1);
-		if(UN::LISTENER_METHOD.getUTF16Length())
+		std::mutex m;
+		std::lock_guard<std::mutex> lock(m);
+		
+		Param1.fromParamAtIndex(pParams, 1);
+		
+		if(!Param1.getUTF16Length())
 		{
-			PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listenerLoopFinish, NULL);
-		}
-	}else
-	{
-		int methodId = PA_GetMethodID((PA_Unichar *)Param1.getUTF16StringPtr());
-		if(methodId)
+			//empty string passed
+			returnValue.setIntValue(1);
+			
+			if(UN::MONITOR_PROCESS_ID)
+			{
+				listenerLoopFinish();
+			}
+			
+		}else
 		{
 			returnValue.setIntValue(1);
-			if(methodId != UN::CALLBACK_METHOD_ID)
-			{
-				UN::LISTENER_METHOD.setUTF16String(Param1.getUTF16StringPtr(), Param1.getUTF16Length());
-				UN::CALLBACK_METHOD_ID = methodId;
-				if(!UN::listener)
-				{
-					PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listenerLoopStart, NULL);
-				}
-			}
+			UN::LISTENER_METHOD.setUTF16String(Param1.getUTF16StringPtr(), Param1.getUTF16Length());
+			
+			PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_start, NULL);
+			listenerLoopStart();
 		}
 	}
 	
-	[methodName release];
-
 	returnValue.setReturn(pResult);
 }
 
-void NOTIFICATION_Get_method(sLONG_PTR *pResult, PackagePtr pParams)
-{
-	UN::LISTENER_METHOD.setReturn(pResult);
-}
-
 // --------------------------------- Notification ---------------------------------
-
-
-void DELIVER_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
-{
-   if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
-   {
-		 NSUserNotification *notification = UN::createNotification(pResult, pParams);
-
-		 [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
-
-		 [notification release];
-   }
-}
 
 void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 {
@@ -606,3 +649,42 @@ void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 	}
 }
 
+void NOTIFICATION_Get_method(sLONG_PTR *pResult, PackagePtr pParams)
+{
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	UN::LISTENER_METHOD.setReturn(pResult);
+}
+
+void NOTIFICATION_Get_mode(sLONG_PTR *pResult, PackagePtr pParams)
+{
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	C_LONGINT returnValue;
+	returnValue.setIntValue(UN::shouldPresentNotification);
+	returnValue.setReturn(pResult);
+}
+
+void DELIVER_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
+{
+	if(NSFoundationVersionNumber >= NSFoundationVersionNumber10_8)
+	{
+		NSUserNotification *notification = UN::createNotification(pResult, pParams);
+		
+		[[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+		
+		[notification release];
+	}
+}
+
+void NOTIFICATION_SET_MODE(sLONG_PTR *pResult, PackagePtr pParams)
+{
+	std::mutex m;
+	std::lock_guard<std::mutex> lock(m);
+	
+	C_LONGINT Param1;
+	Param1.fromParamAtIndex(pParams, 1);
+	UN::shouldPresentNotification = Param1.getIntValue();
+}

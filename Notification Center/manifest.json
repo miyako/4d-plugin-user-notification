@@ -1,1 +1,36 @@
-﻿{"name":"Notification Center","id":20000,"commands":[{"theme":"Notification Center","syntax":"NOTIFICATION Get mode:L"},{"theme":"Notification Center","syntax":"NOTIFICATION SET MODE(&L)"},{"theme":"Notification Center","syntax":"NOTIFICATION SET METHOD(&T)"},{"theme":"Notification Center","syntax":"NOTIFICATION Get method:T"},{"theme":"Notification","syntax":"DELIVER NOTIFICATION(&T;&T;&T;&T;&T;&T;&T)"},{"theme":"Notification","syntax":"SCHEDULE NOTIFICATION(&T;&T;&T;&T;&T;&T;&T;&D;&H;&T)"}]}
+﻿{
+	"name": "Notification Center",
+	"id": 20000,
+	"commands": [
+							 {
+							 "theme": "Notification Center",
+							 "syntax": "NOTIFICATION Get mode:L",
+							 "threadSafe": true
+							 },
+							 {
+							 "theme": "Notification Center",
+							 "syntax": "NOTIFICATION SET MODE(&L)",
+							 "threadSafe": true
+							 },
+							 {
+							 "theme": "Notification Center",
+							 "syntax": "NOTIFICATION SET METHOD(&T)",
+							 "threadSafe": false
+							 },
+							 {
+							 "theme": "Notification Center",
+							 "syntax": "NOTIFICATION Get method:T",
+							 "threadSafe": true
+							 },
+							 {
+							 "theme": "Notification",
+							 "syntax": "DELIVER NOTIFICATION(&T;&T;&T;&T;&T;&T;&T)",
+							 "threadSafe": true
+							 },
+							 {
+							 "theme": "Notification",
+							 "syntax": "SCHEDULE NOTIFICATION(&T;&T;&T;&T;&T;&T;&T;&D;&H;&T)",
+							 "threadSafe": true
+							 }
+							 ]
+}

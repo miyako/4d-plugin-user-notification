@@ -100,7 +100,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Otmkk99VvhSaDa7lYAwtWJmENO0=
+			iBqtSuvMCFvfiXFHjj2lm0In84I=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -112,15 +112,6 @@
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>MacOS/Notification Center.html</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			eQFYx6ykBkPN1h2bXlCWEgrx7ZU=
-			</data>
-			<key>requirement</key>
-			<string>identifier "Notification Center" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Y69CWUC25B</string>
-		</dict>
 		<key>QuickLook/Thumbnail.png</key>
 		<dict>
 			<key>hash</key>
@@ -389,11 +380,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Otmkk99VvhSaDa7lYAwtWJmENO0=
+			iBqtSuvMCFvfiXFHjj2lm0In84I=
 			</data>
 			<key>hash2</key>
 			<data>
-			4SuLA26kQohK9Yg5qRJlspNjn5Cp5QdZ6tlOg9PM91k=
+			fstLNVKOkjQz+lY46I2I1RwGa3aneMmS64gvSSp7T+8=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -420,17 +411,6 @@
 			rp5mwPoToTOMBrO5g9ATVRBDkkR1XpJE6MF06FX5mo0=
 			</data>
 		</dict>
-		<key>Windows/Notification Center.html</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			3f3hE90+GMuzyHmK9RVQvLK+Zs8=
-			</data>
-			<key>hash2</key>
-			<data>
-			EKLRdLPtg+PsdxOrCPdnhlHZLbWCJYLapu/sbQTYgHg=
-			</data>
-		</dict>
 		<key>Windows64/Notification Center.4DX</key>
 		<dict>
 			<key>hash</key>
@@ -442,22 +422,11 @@
 			D81BlAXC8IYBjKsGDu0nx8Zm3OxlDG6/r2pFvj/FY7A=
 			</data>
 		</dict>
-		<key>Windows64/Notification Center.html</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			3f3hE90+GMuzyHmK9RVQvLK+Zs8=
-			</data>
-			<key>hash2</key>
-			<data>
-			EKLRdLPtg+PsdxOrCPdnhlHZLbWCJYLapu/sbQTYgHg=
-			</data>
-		</dict>
 		<key>manifest.json</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			alL0YBzsjfPBqInc1KX/lsGnGW0=
+			jobSmiFCNY0AsZhM1P7un4pL7QU=
 			</data>
 			<key>requirement</key>
 			<string>identifier manifest and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = Y69CWUC25B</string>
