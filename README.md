@@ -23,8 +23,6 @@ except
 
 * ``NOTIFICATION SET METHOD``
 
-[1.2](https://github.com/miyako/4d-plugin-user-notification/releases/tag/1.2)
-
 ## Examples
 
 ```
