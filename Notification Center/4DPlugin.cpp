@@ -18,6 +18,7 @@
 #define MAX_USERINFO_LENGTH 1000
 
 std::mutex globalMutex;
+std::mutex globalMutex0;
 std::mutex globalMutex2;
 
 #pragma mark -
@@ -379,9 +380,8 @@ void listener_end()
 
 void listenerLoopStart()
 {
-	std::lock_guard<std::mutex> lock(globalMutex);
+	std::lock_guard<std::mutex> lock(globalMutex0);
 	
-	/* since v17 it is not allowed to call PA_NewProcess() in main process */
 	if(!UN::MONITOR_PROCESS_ID)
 	{
 		UN::MONITOR_PROCESS_ID = PA_NewProcess((void *)listenerLoop,
