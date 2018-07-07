@@ -17,6 +17,9 @@
 
 #define MAX_USERINFO_LENGTH 1000
 
+std::mutex globalMutex;
+std::mutex globalMutex2;
+
 #pragma mark -
 
 @interface Listener : NSObject <NSUserNotificationCenterDelegate>
@@ -166,8 +169,7 @@ namespace UN
 {
 	[[[NSWorkspace sharedWorkspace] notificationCenter]removeObserver:self];
 	
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	UN::CALLBACK_EVENT_IDS.clear();
 	
@@ -239,8 +241,7 @@ namespace UN
 
 - (void)call:(event_id_t)event
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	if(UN::LISTENER_METHOD.getUTF16Length())
 	{
@@ -300,8 +301,7 @@ void listenerLoop()
 {
 	if(1)
 	{
-		std::mutex m;
-		std::lock_guard<std::mutex> lock(m);
+		std::lock_guard<std::mutex> lock(globalMutex);
 
 		UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
 	}
@@ -310,8 +310,7 @@ void listenerLoop()
     {
 			PA_YieldAbsolute();
 			
-			std::mutex m;
-			std::lock_guard<std::mutex> lock(m);
+			std::lock_guard<std::mutex> lock(globalMutex2);
 			
 			if(UN::PROCESS_SHOULD_RESUME)
 			{
@@ -352,7 +351,7 @@ void listenerLoop()
 	if(1)
 	{
 		std::mutex m;
-		std::lock_guard<std::mutex> lock(m);
+		std::lock_guard<std::mutex> lock(globalMutex);
 
 		UN::LISTENER_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
 	}
@@ -362,8 +361,7 @@ void listenerLoop()
 
 void listener_start()
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	if(!UN::listener)
 	{
@@ -381,8 +379,7 @@ void listener_end()
 
 void listenerLoopStart()
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	/* since v17 it is not allowed to call PA_NewProcess() in main process */
 	if(!UN::MONITOR_PROCESS_ID)
@@ -395,8 +392,7 @@ void listenerLoopStart()
 
 void listenerLoopFinish()
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	if(UN::MONITOR_PROCESS_ID)
 	{
@@ -410,8 +406,7 @@ void listenerLoopFinish()
 
 void listenerLoopExecute()
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
 	UN::PROCESS_SHOULD_RESUME = true;
@@ -419,8 +414,7 @@ void listenerLoopExecute()
 
 void listenerLoopExecuteMethod()
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	std::vector<event_id_t>::iterator e = UN::CALLBACK_EVENT_IDS.begin();
 	
@@ -583,8 +577,7 @@ void NOTIFICATION_SET_METHOD(sLONG_PTR *pResult, PackagePtr pParams)
 
 	if(!IsProcessOnExit())
 	{
-		std::mutex m;
-		std::lock_guard<std::mutex> lock(m);
+		std::lock_guard<std::mutex> lock(globalMutex);
 		
 		Param1.fromParamAtIndex(pParams, 1);
 		
@@ -651,16 +644,14 @@ void SCHEDULE_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 
 void NOTIFICATION_Get_method(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	UN::LISTENER_METHOD.setReturn(pResult);
 }
 
 void NOTIFICATION_Get_mode(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	C_LONGINT returnValue;
 	returnValue.setIntValue(UN::shouldPresentNotification);
@@ -681,8 +672,7 @@ void DELIVER_NOTIFICATION(sLONG_PTR *pResult, PackagePtr pParams)
 
 void NOTIFICATION_SET_MODE(sLONG_PTR *pResult, PackagePtr pParams)
 {
-	std::mutex m;
-	std::lock_guard<std::mutex> lock(m);
+	std::lock_guard<std::mutex> lock(globalMutex);
 	
 	C_LONGINT Param1;
 	Param1.fromParamAtIndex(pParams, 1);
