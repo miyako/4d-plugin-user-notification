@@ -15,7 +15,7 @@ Send Mac OS X Mountain Lion Local User Notification from 4D.
 
 ### Releases
 
-[2.1](https://github.com/miyako/4d-plugin-user-notification/releases/tag/2.1)
+[2.2](https://github.com/miyako/4d-plugin-user-notification/releases/tag/2.2)
 
 ![preemption xx](https://user-images.githubusercontent.com/1725068/41327179-4e839948-6efd-11e8-982b-a670d511e04f.png)
 
