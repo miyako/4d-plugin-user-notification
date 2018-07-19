@@ -19,7 +19,6 @@
 
 std::mutex globalMutex;
 std::mutex globalMutex0;
-std::mutex globalMutex2;
 
 #pragma mark -
 
@@ -47,7 +46,7 @@ namespace UN
     process_stack_size_t MONITOR_PROCESS_STACK_SIZE = 0;
 		event_id_t CALLBACK_EVENT_ID = 0;
 		C_TEXT LISTENER_METHOD;
-		bool MONITOR_PROCESS_SHOULD_TERMINATE;
+		bool PROCESS_SHOULD_TERMINATE;
 		std::vector<event_id_t>CALLBACK_EVENT_IDS;
 		BOOL shouldPresentNotification = YES;
 	
@@ -300,64 +299,96 @@ void OnCloseProcess()
 
 void listenerLoop()
 {
-	if(1)
-	{
-		std::lock_guard<std::mutex> lock(globalMutex);
-
-		UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
-	}
-
-    while(!PA_IsProcessDying())//(!UN::MONITOR_PROCESS_SHOULD_TERMINATE)
+    if(1)
     {
-			PA_YieldAbsolute();
-			
-			std::lock_guard<std::mutex> lock(globalMutex2);
-			
-			if(UN::PROCESS_SHOULD_RESUME)
-			{
-				while(UN::CALLBACK_EVENT_IDS.size())
-				{
-					PA_YieldAbsolute();
-					
-					if(CALLBACK_IN_NEW_PROCESS)
-					{
-						C_TEXT processName;
-						generateUuid(processName);
-						PA_NewProcess((void *)listenerLoopExecuteMethod,
-													UN::MONITOR_PROCESS_STACK_SIZE,
-													(PA_Unichar *)processName.getUTF16StringPtr());
-					}else
-					{
-						listenerLoopExecuteMethod();
-					}
-					
-					if(UN::MONITOR_PROCESS_SHOULD_TERMINATE)
-						break;
-				}
-				
-				UN::PROCESS_SHOULD_RESUME = false;
-				
-			}else
-			{
-				PA_PutProcessToSleep(PA_GetCurrentProcessNumber(), CALLBACK_SLEEP_TIME);
-			}
-			
-			if(UN::MONITOR_PROCESS_SHOULD_TERMINATE)
-				break;
-
-		}
-	
-	PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_end, NULL);
-	
-	if(1)
-	{
-		std::mutex m;
-		std::lock_guard<std::mutex> lock(globalMutex);
-
-		UN::LISTENER_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
-	}
-	
-	PA_KillProcess();
+        std::lock_guard<std::mutex> lock(globalMutex);
+        
+        UN::PROCESS_SHOULD_TERMINATE = false;
+    }
+    
+    while(!PA_IsProcessDying())//(!UN::PROCESS_SHOULD_TERMINATE)
+    {
+        PA_YieldAbsolute();
+        
+        bool PROCESS_SHOULD_RESUME;
+        bool PROCESS_SHOULD_TERMINATE;
+        
+        if(1)
+        {
+            std::lock_guard<std::mutex> lock(globalMutex);
+            PROCESS_SHOULD_RESUME = UN::PROCESS_SHOULD_RESUME;
+            PROCESS_SHOULD_TERMINATE = UN::PROCESS_SHOULD_TERMINATE;
+        }
+        
+        if(PROCESS_SHOULD_RESUME)
+        {
+            size_t EVENT_IDS;
+            
+            if(1)
+            {
+                std::lock_guard<std::mutex> lock(globalMutex);
+                EVENT_IDS = UN::CALLBACK_EVENT_IDS.size();
+            }
+            
+            while(EVENT_IDS)
+            {
+                PA_YieldAbsolute();
+                
+                if(CALLBACK_IN_NEW_PROCESS)
+                {
+                    C_TEXT processName;
+                    generateUuid(processName);
+                    PA_NewProcess((void *)listenerLoopExecuteMethod,
+                                  UN::MONITOR_PROCESS_STACK_SIZE,
+                                  (PA_Unichar *)processName.getUTF16StringPtr());
+                }else
+                {
+                    listenerLoopExecuteMethod();
+                }
+                
+                if(PROCESS_SHOULD_TERMINATE)
+                    break;
+            }
+            
+            if(1)
+            {
+                std::lock_guard<std::mutex> lock(globalMutex);
+                EVENT_IDS = UN::CALLBACK_EVENT_IDS.size();
+                PROCESS_SHOULD_TERMINATE = UN::PROCESS_SHOULD_TERMINATE;
+            }
+            
+            if(1)
+            {
+                std::lock_guard<std::mutex> lock(globalMutex);
+                UN::PROCESS_SHOULD_RESUME = false;
+            }
+            
+        }else
+        {
+            PA_PutProcessToSleep(PA_GetCurrentProcessNumber(), CALLBACK_SLEEP_TIME);
+        }
+        
+        if(1)
+        {
+            std::lock_guard<std::mutex> lock(globalMutex);
+            PROCESS_SHOULD_TERMINATE = UN::PROCESS_SHOULD_TERMINATE;
+        }
+        if(PROCESS_SHOULD_TERMINATE)
+            break;
+        
+    }
+    
+    PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_end, NULL);
+    
+    if(1)
+    {
+        std::mutex m;
+        std::lock_guard<std::mutex> lock(globalMutex);
+        
+        UN::LISTENER_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
+    }
+    
+    PA_KillProcess();
 }
 
 void listener_start()
@@ -396,7 +427,7 @@ void listenerLoopFinish()
 	
 	if(UN::MONITOR_PROCESS_ID)
 	{
-		UN::MONITOR_PROCESS_SHOULD_TERMINATE = true;
+		UN::PROCESS_SHOULD_TERMINATE = true;
 		
 		PA_YieldAbsolute();
 		
@@ -408,7 +439,7 @@ void listenerLoopExecute()
 {
 	std::lock_guard<std::mutex> lock(globalMutex);
 	
-	UN::MONITOR_PROCESS_SHOULD_TERMINATE = false;
+	UN::PROCESS_SHOULD_TERMINATE = false;
 	UN::PROCESS_SHOULD_RESUME = true;
 }
 
