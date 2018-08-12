@@ -436,6 +436,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4D.user-notification";
 				PRODUCT_NAME = "Notification Center";
 				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
@@ -474,6 +475,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4D.user-notification";
 				PRODUCT_NAME = "Notification Center";
 				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
@@ -510,6 +512,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.4D.user-notification";
 				PRODUCT_NAME = "Notification Center";
 				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";

@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Notification Center</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.4D.4DPlugin.user-notification</string>
+	<string>com.4D.user-notification</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -21,7 +21,7 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.2</string>
+	<string>2.3</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>DTCompiler</key>
