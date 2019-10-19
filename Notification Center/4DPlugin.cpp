@@ -176,10 +176,6 @@ namespace UN
 {
 	[[[NSWorkspace sharedWorkspace] notificationCenter]removeObserver:self];
 	
-//    std::lock_guard<std::mutex> lock(globalMutex);
-	
-	UN::CALLBACK_EVENT_IDS.clear();
-	
 	[eventContexts release];
 	
 	[super dealloc];
@@ -318,6 +314,9 @@ void listenerLoop()
         UN::PROCESS_SHOULD_TERMINATE = false;
     }
     
+    /* Current process returns 0 for PA_NewProcess */
+    PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
+    
     while(!PA_IsProcessDying())
     {
         PA_YieldAbsolute();
@@ -379,7 +378,7 @@ void listenerLoop()
             
         }else
         {
-            PA_PutProcessToSleep(PA_GetCurrentProcessNumber(), CALLBACK_SLEEP_TIME);
+            PA_PutProcessToSleep(currentProcessNumber, CALLBACK_SLEEP_TIME);
         }
         
         if(1)
@@ -392,6 +391,12 @@ void listenerLoop()
         
     }
     
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex);
+        
+         UN::CALLBACK_EVENT_IDS.clear();
+    }
     
     if(1)
     {
