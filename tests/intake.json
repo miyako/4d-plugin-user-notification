@@ -1,0 +1,16 @@
+{
+  "full_name": "miyako/4d-plugin-user-notification",
+  "default_branch": "master",
+  "symbolic_origin_HEAD": "refs/remotes/origin/master",
+  "advertised_HEAD": "c23581e26397058c627e8d0e065c5c955d38a5f7",
+  "advertised_default": "c23581e26397058c627e8d0e065c5c955d38a5f7",
+  "authority_header": "5f0e126b303dafc2f4f71abf5a68eed7792bee10",
+  "authority_version": "2.6.1",
+  "project_marketing_count": 3,
+  "project_current_count": 3,
+  "gitlinks": [],
+  "original_automatic_branch_or_pull_request_workflows": [],
+  "original_native_jobs": ["build-macos"],
+  "configuration": "Default",
+  "deployment_override": "11.0"
+}
