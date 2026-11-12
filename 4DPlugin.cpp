@@ -501,9 +501,10 @@ void listenerLoopExecuteMethod()
                     
                     if(methodId)
                     {
+                        /* PA_SetStringVariable is shallow: eVK_Unistring would leak an empty string per slot */
                         PA_Variable	params[6];
                         for(int i = 0; i < 6; ++i)
-                            params[i] = PA_CreateVariable(eVK_Unistring);
+                            params[i] = PA_CreateVariable(eVK_Undefined);
                         
                         UN::setUnistringVariable(&params[0], title);
                         UN::setUnistringVariable(&params[1], subtitle);
@@ -512,7 +513,11 @@ void listenerLoopExecuteMethod()
                         UN::setUnistringVariable(&params[4], activationType);
                         UN::setUnistringVariable(&params[5], userInfo);
                         
-                        PA_ExecuteMethodByID(methodId, params, 6);
+                        /* the returned value is ours to release, unless the call failed */
+                        PA_Variable result = PA_ExecuteMethodByID(methodId, params, 6);
+                        PA_ErrorCode err = PA_GetLastError();
+                        if(err == eER_NoErr)
+                            PA_ClearVariable(&result);
                         
                         for(int i = 0; i < 6; ++i)
                             PA_ClearVariable(&params[i]);
@@ -523,7 +528,7 @@ void listenerLoopExecuteMethod()
                            (the previous code wrote the title into slot 0 before it was created and shifted every argument by one) */
                         PA_Variable	params[7];
                         for(int i = 0; i < 7; ++i)
-                            params[i] = PA_CreateVariable(eVK_Unistring);
+                            params[i] = PA_CreateVariable(eVK_Undefined);
                         
                         PA_Unistring method = PA_CreateUnistring((PA_Unichar *)methodName.getUTF16StringPtr());
                         PA_SetStringVariable(&params[0], &method);

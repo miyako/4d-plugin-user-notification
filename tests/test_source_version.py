@@ -367,5 +367,11 @@ class SourceVersionTests(Fixture):
             "Notification Center.4dbase", "4D Plugin API",
             "manifest.json", "constants.json", "constants.xlf",
             "Notification Center.vcxproj", "Notification Center.sln", "Notification Center.zip", "Notification Center.dmg",
+            ":(exclude)4D Plugin API/Classes/C_PICTURE.cpp",
         ], cwd=ROOT)
         self.assertEqual(diff, b"")
+        # C_PICTURE.cpp carries the ownership fix from miyako/4d-plugin-lha 16bf1198, pinned by blob.
+        picture = subprocess.check_output([
+            "git", "hash-object", "4D Plugin API/Classes/C_PICTURE.cpp",
+        ], cwd=ROOT)
+        self.assertEqual(picture.strip(), b"676d01860dcf42180ce31d749ddd6ee0255e5bec")
